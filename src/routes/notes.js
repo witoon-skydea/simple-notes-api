@@ -9,19 +9,17 @@ const {
   searchNotes
 } = require('../controllers/noteController');
 
-router
-  .route('/')
-  .get(getNotes)
-  .post(createNote);
+// Change the order to ensure /search route is defined before /:id
+// to avoid search being treated as an ID parameter
 
-router
-  .route('/:id')
-  .get(getNote)
-  .put(updateNote)
-  .delete(deleteNote);
+// Search notes - must be before the /:id route
+router.get('/search', searchNotes);
 
-router
-  .route('/search')
-  .get(searchNotes);
+// Standard CRUD operations
+router.get('/', getNotes);
+router.post('/', createNote);
+router.get('/:id', getNote);
+router.put('/:id', updateNote);
+router.delete('/:id', deleteNote);
 
 module.exports = router;
